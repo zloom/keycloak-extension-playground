@@ -1,8 +1,8 @@
 package com.github.thomasdarimont.keycloak.trustdevice;
 
-import org.jboss.resteasy.spi.HttpRequest;
 import org.keycloak.common.ClientConnection;
 import org.keycloak.common.util.ServerCookie;
+import org.keycloak.http.HttpRequest;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.services.util.CookieHelper;
@@ -32,7 +32,6 @@ public class DeviceCookie {
         ClientConnection connection = session.getContext().getConnection();
         boolean secure = realm.getSslRequired().isRequired(connection);
 
-        ServerCookie.SameSiteAttributeValue sameSiteValue = secure ? ServerCookie.SameSiteAttributeValue.NONE : null;
         CookieHelper.addCookie(
                 COOKIE_NAME,
                 deviceTokenString,
@@ -42,7 +41,7 @@ public class DeviceCookie {
                 maxAge,
                 secure,
                 true, // httponly
-                sameSiteValue
+                session
         );
     }
 

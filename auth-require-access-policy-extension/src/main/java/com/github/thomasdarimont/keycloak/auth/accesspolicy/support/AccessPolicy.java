@@ -123,7 +123,7 @@ public class AccessPolicy {
                     .filter(r -> r.getContainerId().equals(client.getId()))
                     .collect(Collectors.toSet());
 
-            expandedClientRoleMappings.addAll(user.getClientRoleMappings(client));
+            expandedClientRoleMappings.addAll(user.getClientRoleMappingsStream(client).collect(Collectors.toList()));
 
             Set<String> clientRolesUser = expandedClientRoleMappings.stream()
                     .map(r -> client.getClientId() + "." + r.getName())

@@ -14,7 +14,7 @@ import org.keycloak.representations.AccessToken;
 import org.keycloak.services.Urls;
 import org.keycloak.services.managers.AuthenticationManager;
 import org.keycloak.theme.FreeMarkerException;
-import org.keycloak.theme.FreeMarkerUtil;
+import org.keycloak.theme.freemarker.FreeMarkerProvider;
 import org.keycloak.theme.Theme;
 import org.keycloak.util.JsonSerialization;
 
@@ -31,13 +31,13 @@ public class TokenResource {
 
     private KeycloakSession session;
     private final Theme theme;
-    private final FreeMarkerUtil freemarker;
+    private final FreeMarkerProvider freemarker;
 
     public TokenResource(KeycloakSession session) {
         try {
             this.session = session;
             theme = session.theme().getTheme(Theme.Type.LOGIN);
-            freemarker = new FreeMarkerUtil();
+            freemarker = session.getProvider(FreeMarkerProvider.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

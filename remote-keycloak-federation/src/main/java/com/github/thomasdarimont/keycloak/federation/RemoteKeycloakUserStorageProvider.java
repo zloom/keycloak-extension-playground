@@ -68,76 +68,6 @@ public class RemoteKeycloakUserStorageProvider implements UserStorageProvider, /
         // NOOP
     }
 
-    @Override
-    public UserModel getUserById(String id, RealmModel realm) {
-
-        log.infof("getUserById id=%s realm=%s", id, realm.getName());
-
-        String externalId = StorageId.externalId(id);
-        UserRepresentation user;
-        try {
-            user = getRemoteKeycloak().getUserById(componentModel.get("realm"), externalId);
-        } catch (Exception ex) {
-            return null;
-        }
-
-        if (user == null) {
-            return null;
-        }
-
-        return toAdapter(realm, user);
-    }
-
-    @Override
-    public UserModel getUserByUsername(String username, RealmModel realm) {
-
-        log.infof("getUserByUsername username=%s realm=%s", username, realm.getName());
-
-        UserModel localUser = session.userLocalStorage().getUserByUsername(realm, username);
-        if (localUser != null) {
-            return localUser;
-        }
-
-        List<UserRepresentation> users;
-        try {
-            users = getRemoteKeycloak().getUserByUsername(componentModel.get("realm"), username, false);
-        } catch (Exception ex) {
-            return null;
-        }
-
-        if (users == null || users.isEmpty()) {
-            return null;
-        }
-
-        UserRepresentation user = users.get(0);
-        return toAdapter(realm, user);
-    }
-
-    @Override
-    public UserModel getUserByEmail(String email, RealmModel realm) {
-
-        log.infof("getUserByEmail email=%s realm=%s", email, realm.getName());
-
-        UserModel localUser = session.userLocalStorage().getUserByEmail(realm, email);
-        if (localUser != null) {
-            return localUser;
-        }
-
-        List<UserRepresentation> users;
-        try {
-            users = getRemoteKeycloak().getUserByEmail(componentModel.get("realm"), email, false);
-        } catch (Exception ex) {
-            return null;
-        }
-
-        if (users == null || users.isEmpty()) {
-            return null;
-        }
-
-        UserRepresentation user = users.get(0);
-        return toAdapter(realm, user);
-    }
-
     private InMemoryUserAdapter toAdapter(RealmModel realm, UserRepresentation userRep) {
 
         String storageId = StorageId.keycloakId(componentModel, userRep.getId());
@@ -301,5 +231,72 @@ public class RemoteKeycloakUserStorageProvider implements UserStorageProvider, /
 
     private RemoteKeycloakClient getRemoteKeycloak() {
         return getRemoteKeycloakProvider().getRemoteKeycloakClient();
+    }
+
+    @Override
+    public UserModel getUserById(RealmModel realm, String id) {
+        log.infof("getUserById id=%s realm=%s", id, realm.getName());
+
+        String externalId = StorageId.externalId(id);
+        UserRepresentation user;
+        try {
+            user = getRemoteKeycloak().getUserById(componentModel.get("realm"), externalId);
+        } catch (Exception ex) {
+            return null;
+        }
+
+        if (user == null) {
+            return null;
+        }
+
+        return toAdapter(realm, user);
+    }
+
+    @Override
+    public UserModel getUserByUsername(RealmModel realm, String username) {
+        log.infof("getUserByUsername username=%s realm=%s", username, realm.getName());
+
+        UserModel localUser = session.userLocalStorage().getUserByUsername(realm, username);
+        if (localUser != null) {
+            return localUser;
+        }
+
+        List<UserRepresentation> users;
+        try {
+            users = getRemoteKeycloak().getUserByUsername(componentModel.get("realm"), username, false);
+        } catch (Exception ex) {
+            return null;
+        }
+
+        if (users == null || users.isEmpty()) {
+            return null;
+        }
+
+        UserRepresentation user = users.get(0);
+        return toAdapter(realm, user);
+    }
+
+    @Override
+    public UserModel getUserByEmail(RealmModel realm, String email) {
+        log.infof("getUserByEmail email=%s realm=%s", email, realm.getName());
+
+        UserModel localUser = session.userLocalStorage().getUserByEmail(realm, email);
+        if (localUser != null) {
+            return localUser;
+        }
+
+        List<UserRepresentation> users;
+        try {
+            users = getRemoteKeycloak().getUserByEmail(componentModel.get("realm"), email, false);
+        } catch (Exception ex) {
+            return null;
+        }
+
+        if (users == null || users.isEmpty()) {
+            return null;
+        }
+
+        UserRepresentation user = users.get(0);
+        return toAdapter(realm, user);
     }
 }

@@ -3,7 +3,6 @@ package com.github.thomasdarimont.keycloak.login;
 import lombok.extern.jbosslog.JBossLog;
 import org.keycloak.forms.login.freemarker.FreeMarkerLoginFormsProvider;
 import org.keycloak.models.KeycloakSession;
-import org.keycloak.theme.FreeMarkerUtil;
 import org.keycloak.theme.Theme;
 
 import javax.ws.rs.core.Response;
@@ -12,8 +11,8 @@ import java.util.Locale;
 @JBossLog
 public class CustomLoginFormsProvider extends FreeMarkerLoginFormsProvider {
 
-    public CustomLoginFormsProvider(KeycloakSession session, FreeMarkerUtil freeMarker) {
-        super(session, freeMarker);
+    public CustomLoginFormsProvider(KeycloakSession session) {
+        super(session);
     }
 
     protected Response processTemplate(Theme theme, String templateName, Locale locale) {

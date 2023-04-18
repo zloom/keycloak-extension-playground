@@ -53,7 +53,7 @@ public class UnsetPasswordEventListenerProvider implements EventListenerProvider
 
         RoleModel role = getRoleFromString(realm, roleName);
 
-        return RoleUtils.hasRole(user.getRoleMappings(), role);
+        return RoleUtils.hasRole(user.getRoleMappingsStream(), role);
     }
 
 

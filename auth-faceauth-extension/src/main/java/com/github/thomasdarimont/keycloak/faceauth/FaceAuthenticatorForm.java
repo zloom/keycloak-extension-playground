@@ -41,7 +41,7 @@ public class FaceAuthenticatorForm implements Authenticator {
     public void action(AuthenticationFlowContext context) {
 
         try {
-            Map faceData = JsonSerialization.readValue(context.getHttpRequest().getInputStream(), Map.class);
+            Map faceData = JsonSerialization.readValue(context.getHttpRequest().toString(), Map.class);
 
             SimpleHttp httpPost = SimpleHttp.doPost("http://localhost:8000/auth", session);
             httpPost.json(faceData);

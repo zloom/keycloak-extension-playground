@@ -49,7 +49,7 @@ public class ThirdPartyMfaAuthenticator implements Authenticator {
 
         log.infof("Request MFA for User. username=%s", username);
 
-        String existingMfaSessionMarker = session.sessions().getUserSessions(realm, user).stream()
+        String existingMfaSessionMarker = session.sessions().getUserSessionsStream(realm, user)
                 // TODO ensure user comes from the same device
                 .filter(us -> us.getNote(MFA_SESSION_MARKER_KEY) != null)
                 .map(us -> us.getNote(MFA_SESSION_MARKER_KEY))

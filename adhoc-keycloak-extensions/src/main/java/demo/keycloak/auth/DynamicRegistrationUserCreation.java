@@ -63,7 +63,7 @@ public class DynamicRegistrationUserCreation extends RegistrationUserCreation {
     @Override
     public void validate(ValidationContext context) {
 
-        HttpRequest httpRequest = context.getHttpRequest();
+        var httpRequest = context.getHttpRequest();
         MultivaluedMap<String, String> formData = httpRequest.getDecodedFormParameters();
         if (formData.containsKey("cancel")) {
 

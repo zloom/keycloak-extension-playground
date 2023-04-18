@@ -23,6 +23,7 @@ import org.keycloak.representations.IDToken;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @JBossLog
 @AutoService(ProtocolMapper.class)
@@ -79,36 +80,27 @@ public class OriginalSubClaimMapper extends AbstractOIDCProtocolMapper implement
         RealmModel realm = userSession.getRealm();
         UserModel user = userSession.getUser();
 
-        List<IdentityProviderModel> identityProviders = realm.getIdentityProviders();
-        Set<FederatedIdentityModel> identities = session.users().getFederatedIdentities(user, realm);
+        var identityProviders = realm.getIdentityProvidersStream();
+        var identities = session.users().getFederatedIdentitiesStream(realm, user);
 
-        if (identityProviders == null || identityProviders.isEmpty()) {
+        if (identityProviders == null || identityProviders.findAny().isEmpty()) {
             return;
         }
 
-        for (IdentityProviderModel provider : identityProviders) {
+        identityProviders.forEach(provider -> {
             if (!provider.isEnabled()) {
-                continue;
+                return;
             }
 
             String providerId = provider.getAlias();
-            FederatedIdentityModel identity = getIdentity(identities, providerId);
+            FederatedIdentityModel identity = identities
+                    .filter(i -> providerId.equals(i.getIdentityProvider()))
+                    .findFirst().orElseThrow();
 
             if (identity != null) {
                 String userId = identity.getUserId();
                 OIDCAttributeMapperHelper.mapClaim(token, mappingModel, userId);
             }
-        }
-    }
-
-    private FederatedIdentityModel getIdentity(Set<FederatedIdentityModel> identities, String providerId) {
-
-        for (FederatedIdentityModel link : identities) {
-            if (providerId.equals(link.getIdentityProvider())) {
-                return link;
-            }
-        }
-
-        return null;
+        });
     }
 }

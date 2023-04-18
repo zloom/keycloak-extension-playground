@@ -13,7 +13,6 @@ import org.keycloak.forms.login.freemarker.model.ClientBean;
 import org.keycloak.forms.login.freemarker.model.RealmBean;
 import org.keycloak.forms.login.freemarker.model.UrlBean;
 import org.keycloak.models.KeycloakSession;
-import org.keycloak.theme.FreeMarkerUtil;
 import org.keycloak.theme.Theme;
 import org.keycloak.utils.MediaType;
 
@@ -36,8 +35,8 @@ public class AcmeFreeMarkerLoginFormsProvider extends FreeMarkerLoginFormsProvid
 
     private static final String ACME_JSON_THEME = "acme-json";
 
-    public AcmeFreeMarkerLoginFormsProvider(KeycloakSession session, FreeMarkerUtil freeMarker) {
-        super(session, freeMarker);
+    public AcmeFreeMarkerLoginFormsProvider(KeycloakSession session) {
+        super(session);
     }
 
     @Override

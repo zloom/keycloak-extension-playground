@@ -145,7 +145,7 @@ public class GenerateBackupCodeAction implements RequiredActionProvider {
 
     protected boolean isCancelApplicationInitiatedAction(RequiredActionContext context) {
 
-        HttpRequest httpRequest = context.getHttpRequest();
+        var httpRequest = context.getHttpRequest();
         MultivaluedMap<String, String> formParams = httpRequest.getDecodedFormParameters();
         return formParams.containsKey(LoginActionsService.CANCEL_AIA);
     }

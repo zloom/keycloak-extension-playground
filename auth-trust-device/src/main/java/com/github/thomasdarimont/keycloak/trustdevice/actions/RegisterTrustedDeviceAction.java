@@ -6,12 +6,12 @@ import com.github.thomasdarimont.keycloak.trustdevice.model.SimpleTrustedDeviceM
 import com.github.thomasdarimont.keycloak.trustdevice.model.TrustedDeviceManager;
 import com.github.thomasdarimont.keycloak.trustdevice.support.UserAgentParser;
 import lombok.extern.jbosslog.JBossLog;
-import org.jboss.resteasy.spi.HttpRequest;
 import org.keycloak.authentication.InitiatedActionSupport;
 import org.keycloak.authentication.RequiredActionContext;
 import org.keycloak.authentication.RequiredActionProvider;
 import org.keycloak.common.util.Time;
 import org.keycloak.forms.login.LoginFormsProvider;
+import org.keycloak.http.HttpRequest;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
@@ -52,7 +52,7 @@ public class RegisterTrustedDeviceAction implements RequiredActionProvider {
     @Override
     public void processAction(RequiredActionContext context) {
 
-        HttpRequest httpRequest = context.getHttpRequest();
+        var httpRequest = context.getHttpRequest();
         MultivaluedMap<String, String> formParams = httpRequest.getDecodedFormParameters();
 
         if (formParams.containsKey("remove-other-trusted-devices")) {
@@ -140,7 +140,7 @@ public class RegisterTrustedDeviceAction implements RequiredActionProvider {
     }
 
     private String generateDeviceName(RequiredActionContext context) {
-        HttpRequest request = context.getHttpRequest();
+        var request = context.getHttpRequest();
 
         String userAgentString = request.getHttpHeaders().getHeaderString(HttpHeaders.USER_AGENT);
         String name = "Browser";

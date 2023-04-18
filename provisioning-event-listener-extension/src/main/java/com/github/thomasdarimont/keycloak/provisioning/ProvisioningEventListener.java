@@ -61,7 +61,7 @@ public class ProvisioningEventListener implements EventListenerProvider {
     private void trySendWelcomeEmail(String realmId, String userId) {
 
         RealmModel realm = session.realms().getRealm(realmId);
-        UserModel user = session.users().getUserById(userId, realm);
+        UserModel user = session.users().getUserById(realm, userId);
 
         if (user.getEmail() == null) {
             log.warnf("Could not send welcome email due to missing email. realm=%s user=%s", realm.getId(), user.getUsername());

@@ -110,7 +110,7 @@ public class SessionRealmResource {
 
         RealmModel realm = session.getContext().getRealm();
         EventBuilder event = new EventBuilder(realm, session, session.getContext().getConnection());
-        Cors cors = Cors.add(request).auth().allowedMethods("PATCH").auth().exposedHeaders(Cors.ACCESS_CONTROL_ALLOW_METHODS);
+        Cors cors = Cors.add((org.keycloak.http.HttpRequest) request).auth().allowedMethods("PATCH").auth().exposedHeaders(Cors.ACCESS_CONTROL_ALLOW_METHODS);
 
         // Form Body MUST contain client_id, client_secret, client MUST be a confidential client
         AuthorizeClientUtil.authorizeClient(session, event, cors);

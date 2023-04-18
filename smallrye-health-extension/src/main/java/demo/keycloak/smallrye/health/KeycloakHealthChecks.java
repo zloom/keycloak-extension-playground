@@ -23,7 +23,7 @@ public class KeycloakHealthChecks {
     public static final int DB_CONNECTION_VALID_TIMEOUT_MILLIS = 1000;
 
     public static final HealthCheckResponseBuilder KEYCLOAK_SERVER_HEALTH_CHECK = HealthCheckResponse.named("keycloak:server")
-            .withData("version", Version.VERSION_KEYCLOAK)
+            .withData("version", Version.VERSION)
             .withData("startupTimestamp", ManagementFactory.getRuntimeMXBean().getStartTime());
 
     @Resource(lookup = "java:jboss/datasources/KeycloakDS")

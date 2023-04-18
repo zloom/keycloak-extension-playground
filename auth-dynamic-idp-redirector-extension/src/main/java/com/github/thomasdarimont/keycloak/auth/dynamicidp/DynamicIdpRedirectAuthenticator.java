@@ -87,19 +87,11 @@ public class DynamicIdpRedirectAuthenticator implements Authenticator {
 
     private IdentityProviderModel selectIdp(AuthenticationFlowContext context, String providerId) {
 
-        List<IdentityProviderModel> identityProviders = context.getRealm().getIdentityProviders();
-        for (IdentityProviderModel identityProvider : identityProviders) {
-
-            if (!identityProvider.isEnabled()) {
-                continue;
-            }
-
-            if (providerId.equals(identityProvider.getAlias())) {
-                return identityProvider;
-            }
-        }
-
-        return null;
+        var identityProviders = context.getRealm().getIdentityProvidersStream();
+        return identityProviders
+                .filter(IdentityProviderModel::isEnabled)
+                .filter(i -> providerId.equals(i.getAlias()))
+                .findFirst().orElseThrow();
     }
 
 

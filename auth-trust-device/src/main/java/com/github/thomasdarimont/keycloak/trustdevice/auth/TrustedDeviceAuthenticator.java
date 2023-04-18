@@ -37,7 +37,7 @@ public class TrustedDeviceAuthenticator implements Authenticator {
 
     public static TrustedDeviceModel lookupTrustedDevice(AuthenticationFlowContext context) {
 
-        HttpRequest httpRequest = context.getHttpRequest();
+        var httpRequest = context.getHttpRequest();
         KeycloakSession session = context.getSession();
         UserModel user = context.getAuthenticationSession().getAuthenticatedUser();
         if (user == null) {

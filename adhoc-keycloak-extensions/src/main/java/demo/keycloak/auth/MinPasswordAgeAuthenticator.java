@@ -31,9 +31,9 @@ public class MinPasswordAgeAuthenticator implements Authenticator {
         UserModel user = context.getUser();
         Map<String, String> config = (context.getAuthenticatorConfig() == null ? Collections.emptyMap() : context.getAuthenticatorConfig().getConfig());
 
-        List<CredentialModel> passwords = context.getSession().userCredentialManager().getStoredCredentialsByType(realm, user, PasswordCredentialModel.TYPE);
-        if (!passwords.isEmpty()) {
-            CredentialModel passwordCredential = passwords.get(0);
+        var passwords = user.credentialManager().getStoredCredentialsByTypeStream(PasswordCredentialModel.TYPE);
+        if (passwords.findAny().isPresent()) {
+            CredentialModel passwordCredential = passwords.findFirst().orElseThrow();
 
             Instant creationTime = Instant.ofEpochMilli(passwordCredential.getCreatedDate());
 

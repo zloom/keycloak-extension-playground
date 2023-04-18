@@ -8,13 +8,9 @@ import org.keycloak.forms.login.LoginFormsProviderFactory;
 import org.keycloak.forms.login.freemarker.FreeMarkerLoginFormsProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.theme.FreeMarkerUtil;
 
 @AutoService(LoginFormsProviderFactory.class)
 public class CustomLoginFormsProviderFactory extends FreeMarkerLoginFormsProviderFactory {
-
-    private FreeMarkerUtil freeMarker;
-
     @Override
     public String getId() {
         return "acme-custom-login-forms";
@@ -22,12 +18,7 @@ public class CustomLoginFormsProviderFactory extends FreeMarkerLoginFormsProvide
 
     @Override
     public LoginFormsProvider create(KeycloakSession session) {
-        return new CustomLoginFormsProvider(session, freeMarker);
-    }
-
-    @Override
-    public void init(Config.Scope config) {
-        freeMarker = new FreeMarkerUtil();
+        return new CustomLoginFormsProvider(session);
     }
 
     @Override
@@ -35,9 +26,5 @@ public class CustomLoginFormsProviderFactory extends FreeMarkerLoginFormsProvide
         // NOOP
     }
 
-    @Override
-    public void close() {
-        freeMarker = null;
-    }
 }
 
